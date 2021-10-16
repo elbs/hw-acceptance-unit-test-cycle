@@ -47,15 +47,21 @@ class MoviesController < ApplicationController
     dir = @movie.director
 
     # portfolio holds results to print
-    @portfolio = Movie.with_director(dir)
+    @movies = Movie.with_director(dir)
 
     # If director name is empty string, aka not set,
     # be sad and redirect to home page
+    # else show the portfolio
     if dir.empty? then
       flash[:notice] = "'#{@movie.title}' has no director info"
       redirect_to movies_path
+    # Elba: https://guides.rubyonrails.org/layouts_and_rendering.html
+    # From the controller's point of view, there are three ways to create an HTTP response:
+    # Call render to create a full response to send back to the browser, call redirect_to,
+    # and call head
+    else
+      render :index
     end
-
   end
 
   private
