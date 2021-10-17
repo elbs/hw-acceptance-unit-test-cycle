@@ -1,14 +1,26 @@
 <!--  This file is app/views/movies/index.html.erb -->
 <h2>All Movies</h2>
 
-<%#  Part 2: Start here... %>
+<!-- Elba: Oh god, from haml to html... from HW3 -->
+<%=  form_tag movies_path, :method => :get, :id => 'ratings_form' do %>
+  <%= hidden_field_tag "title_sort", true if @title_header %>
+  <%= hidden_field_tag ":release_date_sort", true if @date_header %>
+  Include:
+  <% @all_ratings.each do |rating| %>
+    <%= rating %>
+    <%= check_box_tag "ratings[#{rating}]", 1, @selected_ratings.include?(rating), :id => "ratings_#{rating}" %>
+  <% end %>
+  <%= submit_tag 'Refresh', :id => 'ratings_submit', :class => 'btn btn-primary' %>
+<% end %>
+
+<% #  Part 2: Start here... %>
 
 <table class="table table-striped col-md-12" id="movies">
   <thead>
     <tr>
-      <th>Movie Title</th>
+      <th><%= link_to 'Movie Title', movies_path(:sort => 'title', :ratings => @selected_ratings), :id => 'title_header' %> </th>
       <th>Rating</th>
-      <th>Release Date</th>
+      <th><%= link_to 'Release Date', movies_path(:sort => 'release_date', :ratings => @selected_ratings), :id => 'release_date_header' %> </th>
       <th>Director</th>
       <th>More Info</th>
     </tr>
